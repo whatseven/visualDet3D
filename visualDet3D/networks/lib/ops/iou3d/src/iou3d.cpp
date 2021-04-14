@@ -79,7 +79,7 @@ int nms_gpu(at::Tensor boxes, at::Tensor keep, float nms_overlap_thresh){
 
     int boxes_num = boxes.size(0);
     const float * boxes_data = boxes.data_ptr<float>();
-    long * keep_data = keep.data_ptr<long>();
+    int64_t * keep_data = keep.data_ptr<int64_t>();
 
     const int col_blocks = DIVUP(boxes_num, THREADS_PER_BLOCK_NMS);
 
@@ -97,7 +97,7 @@ int nms_gpu(at::Tensor boxes, at::Tensor keep, float nms_overlap_thresh){
 
     cudaFree(mask_data);
 
-    unsigned long long remv_cpu[col_blocks];
+    unsigned long long* remv_cpu = new unsigned long long[col_blocks];
     memset(remv_cpu, 0, col_blocks * sizeof(unsigned long long));
 
     int num_to_keep = 0;
@@ -129,7 +129,7 @@ int nms_normal_gpu(at::Tensor boxes, at::Tensor keep, float nms_overlap_thresh){
 
     int boxes_num = boxes.size(0);
     const float * boxes_data = boxes.data_ptr<float>();
-    long * keep_data = keep.data_ptr<long>();
+    int64_t * keep_data = keep.data_ptr<int64_t>();
 
     const int col_blocks = DIVUP(boxes_num, THREADS_PER_BLOCK_NMS);
 
@@ -147,7 +147,7 @@ int nms_normal_gpu(at::Tensor boxes, at::Tensor keep, float nms_overlap_thresh){
 
     cudaFree(mask_data);
 
-    unsigned long long remv_cpu[col_blocks];
+    unsigned long long* remv_cpu = new unsigned long long[col_blocks];
     memset(remv_cpu, 0, col_blocks * sizeof(unsigned long long));
 
     int num_to_keep = 0;

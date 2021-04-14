@@ -78,6 +78,7 @@ __device__ inline int intersection(const Point &p1, const Point &p0, const Point
 
     // calculate intersection of two lines
     float s5 = cross(q1, p1, p0);
+    const float EPS = 1e-8;
     if(fabs(s5 - s1) > EPS){
         ans.x = (s5 * q0.x - s1 * q1.x) / (s5 - s1);
         ans.y = (s5 * q0.y - s1 * q1.y) / (s5 - s1);
@@ -217,6 +218,7 @@ __device__ inline float iou_bev(const float *box_a, const float *box_b){
     float sa = (box_a[2] - box_a[0]) * (box_a[3] - box_a[1]);
     float sb = (box_b[2] - box_b[0]) * (box_b[3] - box_b[1]);
     float s_overlap = box_overlap(box_a, box_b);
+    const float EPS = 1e-8;
     return s_overlap / fmaxf(sa + sb - s_overlap, EPS);
 }
 
@@ -299,6 +301,7 @@ __device__ inline float iou_normal(float const * const a, float const * const b)
     float interS = width * height;
     float Sa = (a[2] - a[0]) * (a[3] - a[1]);
     float Sb = (b[2] - b[0]) * (b[3] - b[1]);
+    const float EPS = 1e-8;
     return interS / fmaxf(Sa + Sb - interS, EPS);
 }
 
